@@ -2,15 +2,15 @@ import streamlit as st
 from xrpl.clients import JsonRpcClient
 from xrpl.wallet import Wallet
 from xrpl_helper import issue_credential, accept_credential, create_inspection_escrow, release_escrow
-from ai_verification import analyze_bridge_scan
+from ai_verification import analyze_infra_scan # Updated to match generalized logic
 
-st.set_page_config(page_title="Trustless Infrastructure", layout="wide")
+st.set_page_config(page_title="InfraEscrow: Universal Trust", layout="wide")
 client = JsonRpcClient("https://s.altnet.rippletest.net:51234")
 
 # --- State Management ---
 if "funder_wallet" not in st.session_state:
     with st.spinner("Loading Pre-Funded Testnet Wallets..."):
-        # Your permanent, successfully funded wallets!
+        # Permanent, pre-funded wallets
         st.session_state.funder_wallet = Wallet.from_seed("sEd7Q7t71m6EdjrUHLifzpPKeQMbp4R")
         st.session_state.inspector_wallet = Wallet.from_seed("sEd7Msd65yEVvp56qub6AYXnxEFWBXe")
         
@@ -31,8 +31,8 @@ st.sidebar.info(f"**City Treasury:**\n`{funder.address}`")
 st.sidebar.info(f"**Inspector:**\n`{inspector.address}`")
 
 # --- Main UI ---
-st.title("🏗️ Decentralized Civic Infrastructure")
-st.markdown("Automating municipal payouts using **Gemini AI Visual Verification** and **XRPL Credentials + Smart Escrows**.")
+st.title("🏗️ InfraEscrow")
+st.markdown("Automating municipal payouts using **Gemini AI Visual Verification** and **XRPL Smart Contracts**.")
 st.divider()
 
 col1, col2 = st.columns(2)
@@ -58,7 +58,7 @@ with col1:
         if not st.session_state.has_credential:
             st.error("Inspector must hold a valid credential first!")
         else:
-            with st.spinner("Locking 50 XRP via Cryptographic Escrow..."):
+            with st.spinner("Locking XRP via Cryptographic Escrow..."):
                 escrow_data = create_inspection_escrow(funder.seed, inspector.address, amount_xrp=10)
                 st.session_state.escrow_data = escrow_data
                 st.success("Escrow Created! Awaiting AI verification.")
@@ -66,7 +66,7 @@ with col1:
 
 with col2:
     st.header("👷 AI Visual Verification")
-    uploaded_file = st.file_uploader("Upload Steel Bridge Scan", type=["jpg", "png", "jpeg"])
+    uploaded_file = st.file_uploader("Upload Infrastructure Scan", type=["jpg", "png", "jpeg"])
     
     if uploaded_file is not None and st.session_state.escrow_data is not None:
         st.image(uploaded_file, caption="Captured Structural Scan", width=300)
@@ -76,20 +76,28 @@ with col2:
                 st.error("API Key missing! Check the sidebar.")
             else:
                 with st.spinner("Gemini AI Analyzing Structural Data..."):
-                    ai_result = analyze_bridge_scan(uploaded_file, gemini_key)
+                    ai_result = analyze_infra_scan(uploaded_file, gemini_key)
                 
-                if ai_result["status"] == "Verified":
-                    st.success(f"✅ Status: {ai_result['status']} (Confidence: {ai_result['confidence']})")
-                    st.info(f"AI Notes: {ai_result['details']}")
+                # Fixed Indentation Block below
+                if ai_result.get("status") == "Verified":
+                    st.success(f"✅ Status: {ai_result.get('status')} (Confidence: {ai_result.get('confidence')})")
+                    st.info(f"AI Notes: {ai_result.get('details')}")
                     
                     with st.spinner("Submitting Preimage to execute Escrow..."):
                         data = st.session_state.escrow_data
-                        finish_hash = release_escrow(funder.address, data["sequence"], data["condition"], data["preimage"], funder.seed)
+                        finish_hash = release_escrow(
+                            funder.address, 
+                            data["sequence"], 
+                            data["condition"], 
+                            data["preimage"], 
+                            funder.seed
+                        )
                     
                     st.balloons()
                     st.success("💸 Smart Contract Executed! Funds Released.")
                     st.write(f"**Release TX Hash:** `{finish_hash}`")
                 else:
-                    st.error(f"❌ Status: {ai_result['status']}. AI Notes: {ai_result['details']}")
+                    st.error(f"❌ Status: {ai_result.get('status')}. AI Notes: {ai_result.get('details')}")
+                    
     elif uploaded_file is not None and st.session_state.escrow_data is None:
         st.warning("The City must lock the funds before work can be verified.")
