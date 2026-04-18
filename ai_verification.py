@@ -4,7 +4,7 @@ import re
 
 def analyze_infra_scan(image_file, api_key):
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-2.5-flash')
     
     # We use a very strict prompt for JSON structure
     prompt = """
