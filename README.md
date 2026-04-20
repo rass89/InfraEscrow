@@ -22,7 +22,7 @@ InfraEscrow operates on three distinct layers of verification:
 ## 🛠️ Tech Stack
 
   - **Blockchain:** XRP Ledger (XRPL) via `xrpl-py`
-  - **AI Oracle:** Google Gemini 1.5 Flash (Multimodal)
+  - **AI Oracle:** Google Gemini 2.5 Flash (Multimodal)
   - **Smart Contracts:** XRPL Escrows & Credentials
   - **Frontend:** Streamlit
   - **Backend:** Python 3.14
