@@ -17,7 +17,7 @@ InfraEscrow operates on three distinct layers of verification:
 
 1.  **Legal Trust (Identity):** Utilizing the **XRPL Credentials** standard, we verify the subject's professional engineering license on-chain. Only certified inspectors can initiate the diagnostic process.
 2.  **Financial Trust (Escrow):** Funds are locked in a cryptographic **Smart Escrow** vault. The XRP is physically removed from the City Treasury and held by the ledger, guaranteed to be paid out only upon completion or returned if the work is never verified.
-3.  **Technical Trust (AI Oracle):** We employ **Gemini 1.5 Flash** as a technical oracle. The AI performs a multimodal analysis of structural scans (dams, bridges, tunnels) and issues a cryptographically triggered "Verified" verdict to release the funds.
+3.  **Technical Trust (AI Oracle):** We employ **Gemini 2.5 Flash** as a technical oracle. The AI performs a multimodal analysis of structural scans (dams, bridges, tunnels) and issues a cryptographically triggered "Verified" verdict to release the funds.
 
 ## 🛠️ Tech Stack
 
