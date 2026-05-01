@@ -63,7 +63,3 @@ InfraEscrow operates on three distinct layers of verification:
 3.  **Analysis:** Upload a structural scan (e.g., a steel bridge joint or concrete dam wall).
 4.  **Payout:** Watch the AI Oracle verify the integrity and trigger the instant settlement on the XRP Ledger.
 This project represents the intersection of Structural Health Monitoring (SHM) and Decentralized Finance (DeFi) to build safer, more efficient smart cities.
-
-
-
-Your repository is now pitch-ready\! Is there anything else you want to add to the "Future Vision" section before you submit to the HackKU portal?
